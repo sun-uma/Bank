@@ -1,0 +1,1 @@
+Banking app built with Spring boot using JPA, hibernate, and a mySql database. API for creating an account, withdrawing/depositing cash, and viewing all transactions between two given dates.
