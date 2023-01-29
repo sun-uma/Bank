@@ -12,7 +12,8 @@ public class TransactionTypeValidator implements ConstraintValidator<Transaction
     @Override
     public boolean isValid(String transactionType, ConstraintValidatorContext context) {
         return transactionType.compareToIgnoreCase("WITHDRAW") == 0 || 
-        		transactionType.compareToIgnoreCase("DEPOSIT") == 0;
+        		transactionType.compareToIgnoreCase("DEPOSIT") == 0 ||
+                transactionType.compareToIgnoreCase("TRANSFER") == 0;
     }
  
 }

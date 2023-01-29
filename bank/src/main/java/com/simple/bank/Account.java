@@ -1,16 +1,13 @@
 package com.simple.bank;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Set;
 
 import javax.validation.constraints.*;
 
@@ -36,6 +33,9 @@ public class Account {
 	@Min(0)
 	@NotNull
 	private float balance;
+
+	@NotNull
+	private boolean disabled;
 	
 	@NotNull
 	private Timestamp created;
@@ -43,15 +43,13 @@ public class Account {
 	@NotNull
 	private Timestamp updated;
 	
-	@OneToMany (cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Transactions> transactions;
-	
 	Account(String name, Date dob, String accType, float transactionFee, float balance) {
 		this.name = name;
 		this.dob = dob;
 		this.accType = accType;
 		this.transactionFee = transactionFee;
 		this.balance = balance;
+		this.disabled = false;
 		created = Timestamp.from(Instant.now());
 		updated = created;
 	}
@@ -104,6 +102,14 @@ public class Account {
 	public float getBalance () {
 		return this.balance;
 	}
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
 	
 	public Timestamp getCreated() {
 		return this.created;
@@ -115,14 +121,6 @@ public class Account {
 	
 	public Timestamp getUpdated() {
 		return this.updated;
-	}
-	
-	public void addTransaction (Transactions transaction) {
-		transactions.add(transaction);
-	}
-	
-	public Set<Transactions> getTransactions () {
-		return this.transactions;
 	}
 
 }

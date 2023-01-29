@@ -15,7 +15,10 @@ public class MakeTransaction {
 	}
 	
 	private void withdraw() {
-		if(transaction.getAmount() > transaction.getOldBalance())
+		if((transaction.getAccount().getAccType().compareTo("CURRENT") == 0 &&
+				((transaction.getAmount()+5) > transaction.getOldBalance())) ||
+				(transaction.getAccount().getAccType().compareTo("SAVINGS") == 0 &&
+				(transaction.getAmount() > transaction.getOldBalance())))
 		{
 			logger.error("Balance less than amount");
 			throw new ResponseStatusException
@@ -32,23 +35,35 @@ public class MakeTransaction {
 	}
 	
 	public boolean makeTransaction () {
-		
-		if(transaction.getType().compareTo("WITHDRAW") == 0)
-			this.withdraw();
-		else
-			this.deposit();
-		
-		// transaction fee
-		if(transaction.getAccount().getAccType().compareTo("CURRENT") == 0)
-			transaction.setNewBalance(transaction.getNewBalance() - 5);
-		
-		// updating account balance
-		transaction.getAccount().setBalance(transaction.getNewBalance());
-		transaction.getAccount().setUpdated(transaction.getUpdated());
-		
-		logger.info("Account updated, transaction complete");
-		
-		return true;
+
+		logger.info("Old balance: {}", transaction.getOldBalance());
+		logger.info("New Balance: {}", transaction.getNewBalance());
+
+		try {
+			if (transaction.getType().compareTo("WITHDRAW") == 0)
+				this.withdraw();
+			else
+				this.deposit();
+
+			// transaction fee
+			if (transaction.getAccount().getAccType().compareTo("CURRENT") == 0)
+				transaction.setNewBalance(transaction.getNewBalance() - 5);
+
+			// updating account balance
+			transaction.getAccount().setBalance(transaction.getNewBalance());
+			transaction.getAccount().setUpdated(transaction.getUpdated());
+
+			logger.info("Old balance: {}", transaction.getOldBalance());
+			logger.info("New Balance: {}", transaction.getNewBalance());
+
+			logger.info("Account updated, transaction complete");
+
+			return true;
+		} catch (Exception e) {
+			logger.error("Transaction failed");
+			transaction.setNewBalance(transaction.getOldBalance());
+			return false;
+		}
 	}
 	
 }

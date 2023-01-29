@@ -12,6 +12,8 @@ public class TransactionRequest {
 	@NotBlank (message="Type cannot be blank")
 	@TransactionType
 	private String type;
+
+	private String remarks;
 	
 	TransactionRequest() { }
 	
@@ -30,5 +32,14 @@ public class TransactionRequest {
 	public String getType () {
 		return this.type;
 	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
 
 }

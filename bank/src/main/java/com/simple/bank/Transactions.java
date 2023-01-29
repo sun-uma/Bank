@@ -34,6 +34,8 @@ public class Transactions {
 	
 	@NotNull
 	private String type;
+
+	private String remarks;
 	
 	@NotNull
 	private Date date;
@@ -56,6 +58,10 @@ public class Transactions {
 	public void setAccount (Account account) {
 		this.account = account;
 		this.oldBalance = account.getBalance();
+	}
+
+	public int getTid() {
+		return tid;
 	}
 	
 	public Account getAccount () {
@@ -89,7 +95,15 @@ public class Transactions {
 	public String getType () {
 		return this.type;
 	}
-	
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
 	public void setDate (Date date) {
 		this.date = date;
 	}

@@ -45,6 +45,31 @@ public class MainController {
 		
 	}
 
+	@PostMapping(path="/disable-account/{AccNo}")
+	public Account disableAccount (@PathVariable long AccNo) {
+
+		logger.info("Searching for account");
+		Optional<Account> account = accountRepository.findById(AccNo);
+		if(!account.isPresent())
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "account not found");
+		logger.info("Account found");
+
+		Account realAccount = account.get();
+		logger.info("Account is disabled: {}", account.get().isDisabled());
+		if (account.get().isDisabled()) {
+			throw new ResponseStatusException
+					(HttpStatus.BAD_REQUEST, "Account already disabled!");
+		}
+
+		realAccount.setDisabled(true);
+		realAccount.setBalance(0);
+		accountRepository.save(realAccount);
+		logger.info("Account disabled");
+
+		return account.get();
+
+	}
+
 	@PostMapping(path="/transaction/{AccNo}")
 	public Transactions makeTransaction 
 	(@Valid @RequestBody TransactionRequest transactionRequest, @PathVariable long AccNo) {
@@ -57,10 +82,19 @@ public class MainController {
 		if(!account.isPresent())
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "account not found");
 		logger.info("Account found");
+
+		logger.info("Account is disabled: {}", account.get().isDisabled());
+		if (account.get().isDisabled()) {
+			throw new ResponseStatusException
+					(HttpStatus.BAD_REQUEST, "Account is disabled!");
+		}
 		
 		transaction.setAccount(account.get());
 		transaction.setAmount(transactionRequest.getAmount());
 		transaction.setType(transactionRequest.getType().toUpperCase());
+		transaction.setRemarks(transactionRequest.getRemarks());
+
+		logger.info("Old balance : {}", transaction.getOldBalance());
 		
 		logger.info("Starting transaction");
 		MakeTransaction makeTransaction = new MakeTransaction(transaction);
@@ -69,12 +103,61 @@ public class MainController {
 		else
 			transaction.setStatus("FAILURE");
 		logger.info("Transaction completed " + transaction.getStatus());
+
+		logger.info("New Balance: {}", transaction.getOldBalance());
+		logger.info("Old Balance: {}", transaction.getNewBalance());
 		
 		//transaction.getAccount().addTransaction(transaction);
 		
 		transactionsRepository.save(transaction);
 		logger.info("Saved transaction to database");
 		return transaction;
+	}
+
+	@PostMapping(path="/transfer/")
+	public Transactions makeTransfer
+			(@RequestParam long depositorAcc, @RequestParam long receiverAcc,
+			 @RequestBody TransactionRequest transactionRequest) {
+
+		logger.info("Starting transfer");
+
+		TransactionRequest depositorTransaction = new TransactionRequest();
+		depositorTransaction.setAmount(transactionRequest.getAmount());
+		depositorTransaction.setType("WITHDRAW");
+		depositorTransaction.setRemarks(receiverAcc + "/" + transactionRequest.getRemarks());
+		Transactions depositor = makeTransaction(depositorTransaction, depositorAcc);
+		if(depositor.getStatus().compareTo("FAILURE") == 0) {
+			logger.error("Transaction failed");
+			return depositor;
+		}
+
+		logger.info("Amount withdrawn from {}", depositorAcc);
+
+		TransactionRequest receiverTransaction = new TransactionRequest();
+		receiverTransaction.setAmount(transactionRequest.getAmount());
+		receiverTransaction.setType("DEPOSIT");
+		receiverTransaction.setRemarks(depositorAcc + "/" + transactionRequest.getRemarks());
+
+		try {
+			makeTransaction(receiverTransaction, receiverAcc);
+		} catch (Exception E) {
+			logger.error("Could not deposit funds");
+
+			logger.info("Rolling back transaction");
+			TransactionRequest rollbackTransaction = new TransactionRequest();
+			rollbackTransaction.setType("DEPOSIT");
+			rollbackTransaction.setAmount(transactionRequest.getAmount());
+			rollbackTransaction.setRemarks("Rollback Transaction/" + depositor.getTid() +
+					"/" + receiverAcc);
+			Transactions rollback = makeTransaction(rollbackTransaction, depositorAcc);
+
+			logger.info("Transaction rolled back");
+			return rollback;
+		}
+
+		logger.info("Amount deposited to acc no{}", receiverAcc);
+
+		return depositor;
 	}
 	
 	@GetMapping(path="/get-transactions/{AccNo}")
