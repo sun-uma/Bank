@@ -42,6 +42,8 @@ public class Account {
 	
 	@NotNull
 	private Timestamp updated;
+
+	private Timestamp interestLastCredited;
 	
 	Account(String name, Date dob, String accType, float transactionFee, float balance) {
 		this.name = name;
@@ -122,5 +124,14 @@ public class Account {
 	public Timestamp getUpdated() {
 		return this.updated;
 	}
+
+	public Timestamp getInterestLastCredited() {
+		return interestLastCredited;
+	}
+
+	public void setInterestLastCredited(Timestamp interestLastCredited) {
+		this.interestLastCredited = interestLastCredited;
+	}
+
 
 }
