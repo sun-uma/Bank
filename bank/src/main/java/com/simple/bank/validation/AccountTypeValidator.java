@@ -1,4 +1,6 @@
-package com.simple.bank;
+package com.simple.bank.validation;
+
+import com.simple.bank.validation.AccountType;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

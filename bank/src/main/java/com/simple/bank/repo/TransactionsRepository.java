@@ -1,5 +1,6 @@
-package com.simple.bank;
+package com.simple.bank.repo;
 
+import com.simple.bank.entity.Transactions;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

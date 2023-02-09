@@ -1,10 +1,12 @@
-package com.simple.bank;
+package com.simple.bank.bo;
 
 import java.sql.Date;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+import com.simple.bank.validation.AccountType;
+import com.simple.bank.validation.DateConstraint;
 import org.springframework.format.annotation.DateTimeFormat;
 
 //import javax.validation.constraints.NotBlank;
@@ -24,7 +26,7 @@ public class AccountRequest {
 	@Min(0)
 	private float initialDeposit;
 	
-	AccountRequest() {
+	public AccountRequest() {
 		this.initialDeposit = 0;
 	}
 	

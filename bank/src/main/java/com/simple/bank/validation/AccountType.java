@@ -1,4 +1,4 @@
-package com.simple.bank;
+package com.simple.bank.validation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

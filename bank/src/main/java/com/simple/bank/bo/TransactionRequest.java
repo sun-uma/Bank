@@ -1,4 +1,6 @@
-package com.simple.bank;
+package com.simple.bank.bo;
+
+import com.simple.bank.validation.TransactionType;
 
 import javax.validation.constraints.*;
 
@@ -15,7 +17,7 @@ public class TransactionRequest {
 
 	private String remarks;
 	
-	TransactionRequest() { }
+	public TransactionRequest() { }
 	
 	public void setAmount (float amount) {
 		this.amount = amount;

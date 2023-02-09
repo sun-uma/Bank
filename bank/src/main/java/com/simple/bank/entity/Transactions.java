@@ -1,4 +1,8 @@
-package com.simple.bank;
+package com.simple.bank.entity;
+
+import com.simple.bank.entity.Account;
+import com.simple.bank.process.TransactionHandler;
+import com.simple.bank.utils.Constants;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,15 +48,27 @@ public class Transactions {
 	private String status;
 	
 	@NotNull
-	private Timestamp created;
+	private final Timestamp created;
 	
 	@NotNull
 	private Timestamp updated;
 	
-	Transactions() {
+	public Transactions(Account account, float amount, String type, String remarks) {
+		this.account = account;
+		this.amount = amount;
+		this.type = type;
+		this.remarks = remarks;
+		this.status = Constants.TRANSACTIONS_STATUS_STARTED;
+		this.oldBalance = account.getBalance();
+		this.newBalance = account.getBalance();
 		this.date = new Date (new java.util.Date().getTime());
 		this.created = Timestamp.from(Instant.now());
-		this.updated = created;
+		this.updated = Timestamp.from(Instant.now());
+	}
+
+	Transactions() {
+		created = Timestamp.from(Instant.now());
+		updated = Timestamp.from(Instant.now());
 	}
 	
 	public void setAccount (Account account) {

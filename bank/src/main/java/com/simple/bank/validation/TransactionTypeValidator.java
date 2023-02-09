@@ -1,4 +1,4 @@
-package com.simple.bank;
+package com.simple.bank.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
