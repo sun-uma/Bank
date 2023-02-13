@@ -1,4 +1,4 @@
-package com.simple.bank;
+package com.simple.bank.validation;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

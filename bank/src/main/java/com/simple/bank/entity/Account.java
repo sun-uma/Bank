@@ -1,4 +1,4 @@
-package com.simple.bank;
+package com.simple.bank.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -38,14 +39,14 @@ public class Account {
 	private boolean disabled;
 	
 	@NotNull
-	private Timestamp created;
+	private final Timestamp created;
 	
 	@NotNull
 	private Timestamp updated;
 
 	private Timestamp interestLastCredited;
 	
-	Account(String name, Date dob, String accType, float transactionFee, float balance) {
+	public Account(String name, Date dob, String accType, float transactionFee, float balance) {
 		this.name = name;
 		this.dob = dob;
 		this.accType = accType;
@@ -53,12 +54,12 @@ public class Account {
 		this.balance = balance;
 		this.disabled = false;
 		created = Timestamp.from(Instant.now());
-		updated = created;
+		updated = Timestamp.from(Instant.now());
 	}
 	
 	Account() {
 		created = Timestamp.from(Instant.now());
-		updated = created;
+		updated = Timestamp.from(Instant.now());
 	}
 	
 	public long getAccNo () {
