@@ -49,10 +49,6 @@ public class TransactionHandler {
 			else
 				deposit(transaction);
 
-			// transaction fee
-			float transactionFee = accountUtils.getTransactionFee(transaction.getAccount().getAccType());
-			transaction.setNewBalance(transaction.getNewBalance() - transactionFee);
-
 			// updating account balance
 			transaction.getAccount().setBalance(transaction.getNewBalance());
 			transaction.getAccount().setUpdated(transaction.getUpdated());
