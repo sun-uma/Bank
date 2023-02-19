@@ -21,4 +21,7 @@ public interface LoanRepository extends CrudRepository<Loan, Integer> {
 
     @Query(value = "Select * from Loan where is_active = 1", nativeQuery=true)
     public List<Loan> findActiveLoans();
+
+    @Query(value = "Select * from Loan l where l.account_acc_no =:accNo", nativeQuery=true)
+    public List<Loan> findByAccNo(@Param("accNo") long AccNo);
 }

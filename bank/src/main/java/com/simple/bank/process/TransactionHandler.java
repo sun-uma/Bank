@@ -2,7 +2,6 @@ package com.simple.bank.process;
 
 import com.simple.bank.entity.Transactions;
 import com.simple.bank.repo.TransactionsRepository;
-import com.simple.bank.utils.AccountUtils;
 import com.simple.bank.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,18 +18,16 @@ public class TransactionHandler {
 
 	@Autowired
 	private TransactionsRepository transactionsRepository;
-	@Autowired
-	private AccountUtils accountUtils;
 
 	private static final Logger logger = LogManager.getLogger(TransactionHandler.class);
 	
 	private void withdraw(Transactions transaction) {
-		float transactionFee = accountUtils.getTransactionFee(transaction.getAccount().getAccType());
+		float transactionFee = transaction.getAccount().getTransactionFee();
 		if((transaction.getAmount() + transactionFee) > transaction.getOldBalance())
 		{
 			logger.error("Balance less than amount");
 			throw new ResponseStatusException
-			(HttpStatus.BAD_REQUEST, "Not enough funds to carry out transaction");
+					(HttpStatus.BAD_REQUEST, "Not enough funds to carry out transaction");
 		}
 			
 		transaction.setNewBalance(transaction.getOldBalance() - (transaction.getAmount() + transactionFee));

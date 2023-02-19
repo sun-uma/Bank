@@ -51,7 +51,7 @@ public class Loan {
     @NotNull
     private Timestamp updatedDateTime;
 
-    Loan() {
+    public Loan() {
         createdDateTime = Timestamp.from(Instant.now());
         updatedDateTime = Timestamp.from(Instant.now());
     }

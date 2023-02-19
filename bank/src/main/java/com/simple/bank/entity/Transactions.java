@@ -66,7 +66,7 @@ public class Transactions {
 		this.updated = Timestamp.from(Instant.now());
 	}
 
-	Transactions() {
+	public Transactions() {
 		created = Timestamp.from(Instant.now());
 		updated = Timestamp.from(Instant.now());
 	}
