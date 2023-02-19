@@ -57,7 +57,7 @@ public class Account {
 		updated = Timestamp.from(Instant.now());
 	}
 	
-	Account() {
+	public Account() {
 		created = Timestamp.from(Instant.now());
 		updated = Timestamp.from(Instant.now());
 	}

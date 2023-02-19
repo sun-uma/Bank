@@ -53,13 +53,13 @@ public class LoanHandler {
             return false;
         }
 
-        if (loanApplication.getLoanAmount() <= minLoanAmount) {
+        if (loanApplication.getLoanAmount() < minLoanAmount) {
             loanApplication.setRemarks(Constants.LOAN_AMOUNT_TOO_LOW);
             logger.info("Loan amount too low");
             return false;
         }
 
-        if (loanApplication.getLoanAmount() >= maxLoanAmount) {
+        if (loanApplication.getLoanAmount() > maxLoanAmount) {
             loanApplication.setRemarks(Constants.LOAN_AMOUNT_TOO_HIGH);
             logger.info("Loan amount too high");
             return false;

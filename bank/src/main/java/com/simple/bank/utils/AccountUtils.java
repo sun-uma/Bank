@@ -27,12 +27,6 @@ public class AccountUtils {
     @Autowired
     private LoanRepository loanRepository;
 
-    @Value("${savings.account.interest.rate}")
-    private float savingsAccInterestRate;
-
-    @Value("${current.account.interest.rate}")
-    private float currentAccInterestRate;
-
     @Value("${savings.account.transaction.fee}")
     private float savingsAccTransactionFee;
 
@@ -71,7 +65,7 @@ public class AccountUtils {
         if(!loanList.isEmpty()) {
             logger.error("Cannot disable account with unpaid loan!");
             throw new ResponseStatusException
-                    (HttpStatus.BAD_REQUEST, "Account has existing loan!");
+                    (HttpStatus.BAD_REQUEST, "Account has outstanding loan!");
         }
 
         logger.info("Disabling account");
@@ -87,12 +81,6 @@ public class AccountUtils {
         if(accType.compareToIgnoreCase(Constants.CURRENT) == 0)
             return currentAccTransactionFee;
         return savingsAccTransactionFee;
-    }
-
-    public float getInterestRate(String accType) {
-        if(accType.compareToIgnoreCase(Constants.CURRENT) == 0)
-            return currentAccInterestRate;
-        return savingsAccInterestRate;
     }
 
     public float getLoanInterestRate(String accType) {

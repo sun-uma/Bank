@@ -15,4 +15,7 @@ public interface TransactionsRepository extends CrudRepository<Transactions, Int
 	public List<Transactions> findByAccountBetweenDates 
 	(@Param("accNo") long AccNo, @Param("from") Date from, @Param("to") Date to);
 
+	@Query(value = "Select * from Transactions where account_acc_no =:accNo", nativeQuery=true)
+	public List<Transactions> findTransactionsFromAccNo(@Param("accNo") long AccNo);
+
 }

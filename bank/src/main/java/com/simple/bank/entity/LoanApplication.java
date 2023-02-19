@@ -43,7 +43,7 @@ public class LoanApplication {
     @NotNull
     private final Timestamp createdDateTime;
 
-    LoanApplication() {
+    public LoanApplication() {
         createdDateTime = Timestamp.from(Instant.now());
     }
 
