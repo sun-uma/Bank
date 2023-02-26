@@ -13,7 +13,6 @@ import com.simple.bank.repo.TransactionsRepository;
 import com.simple.bank.utils.InterestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
@@ -123,7 +121,6 @@ public class CronController {
             if(transaction.getStatus().compareTo(Constants.TRANSACTION_STATUS_FAILED) == 0) {
                 logger.error("Customer unable to repay loan!!");
                 loan.setRedFlag(true);
-                loan.setAmountPaid(0);
                 loan.setAmountRemaining(loan.getAmountRemaining() + loanDefaulterFine);
                 loan.setRepaymentAmount(loan.getRepaymentAmount() + loanDefaulterFine);
             } else {

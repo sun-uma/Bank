@@ -78,10 +78,10 @@ public class MainController {
 			 @RequestBody TransactionRequest transactionRequest) {
 
 		logger.info("Called transfer from acc no {} to {}", depositorAcc, receiverAcc);
-		if(transactionRequest.getType().compareTo(Constants.TRANSFER) != 0) {
+		if(transactionRequest.getType().compareToIgnoreCase(Constants.TRANSFER) != 0) {
 			logger.info("Wrong api!");
 			throw new ResponseStatusException
-					(HttpStatus.NOT_FOUND, "This API is only used for transfers!");
+					(HttpStatus.BAD_REQUEST, "This API is only used for transfers!");
 		}
 		accountUtils.validateAccount(depositorAcc);
 		accountUtils.validateAccount(receiverAcc);
